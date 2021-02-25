@@ -15,7 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.http import HttpResponse
+
+
+def show_phones(request):
+    print('Кто-то зашёл на главную!')
+    return HttpResponse('''<!DOCTYPE html>
+<html>
+<head>
+  <title>Стартовая</title>
+</head>
+<body>
+  <h1>Здесь будет карта</h1>
+</body>
+</html>''')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('phones/', show_phones),
 ]
