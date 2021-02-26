@@ -7,6 +7,7 @@ class Place(models.Model):
     description_long = models.TextField()
     coordinates_lat = models.CharField(max_length=20)
     coordinates_lng = models.CharField(max_length=20)
+    placeId = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title

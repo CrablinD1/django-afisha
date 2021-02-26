@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 images
 # C extensions
+.idea
 *.so
 db.sqlite3
 media
