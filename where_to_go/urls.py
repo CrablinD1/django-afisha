@@ -18,13 +18,11 @@ from django.urls import path
 from django.shortcuts import render
 from django.conf import settings
 from django.conf.urls.static import static
+from places.views import index
 
-
-def show_phones(request):
-    return render(request, 'index.html')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', show_phones),
+    path('', index, name='index_page')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
