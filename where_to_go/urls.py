@@ -18,11 +18,12 @@ from django.urls import path
 from django.shortcuts import render
 from django.conf import settings
 from django.conf.urls.static import static
-from places.views import index
+from places.views import index, json_place
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='index_page')
+    path('', index, name='index_page'),
+    path('places/<int:id>/', json_place),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

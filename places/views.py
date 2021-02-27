@@ -1,6 +1,7 @@
 import json
-from django.shortcuts import render
-from .models import Place
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from .models import Place, PlaceImage
 
 
 def index(request):
@@ -24,3 +25,25 @@ def index(request):
 
     print(context)
     return render(request, 'index.html', context)
+
+
+def json_place(request, id):
+    place = get_object_or_404(Place, id=id)
+    images = PlaceImage.objects.all().filter(place=place.id)
+    imgs = []
+    for i in images:
+        imgs.append(i.image.url)
+
+    responce = {
+        "title": place.title,
+        "imgs": imgs,
+        "description_short": place.description_short,
+        "description_long": place.description_long,
+        "coordinates": {
+            "lat": place.coordinates_lat,
+            "lng": place.coordinates_lng
+        }
+    }
+
+    return JsonResponse(responce, safe=False,
+                        json_dumps_params={'ensure_ascii': False})
