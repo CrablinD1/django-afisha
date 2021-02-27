@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models import F
-
 
 
 class Place(models.Model):
@@ -9,7 +7,6 @@ class Place(models.Model):
     description_long = models.TextField()
     coordinates_lat = models.CharField(max_length=20)
     coordinates_lng = models.CharField(max_length=20)
-    placeId = models.CharField(max_length=255)
 
     def __str__(self):
         return self.title
@@ -19,10 +16,10 @@ class PlaceImage(models.Model):
     place = models.ForeignKey(Place, related_name='images',
                               on_delete=models.CASCADE, verbose_name='Место')
     image = models.ImageField(upload_to='images/', blank=True)
-    position = models.CharField(
-        max_length=1,
-        blank=True,
-        null=True,
+    position = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
         verbose_name="Позиция"
     )
 
@@ -30,4 +27,4 @@ class PlaceImage(models.Model):
         return f"{self.id} - {str(self.place)}"
 
     class Meta:
-        ordering = [F('position').asc(nulls_last=True)]
+        ordering = ['position']
