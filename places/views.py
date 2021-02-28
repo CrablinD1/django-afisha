@@ -1,8 +1,10 @@
 import json
-from django.shortcuts import render, get_object_or_404
+
 from django.http import JsonResponse
-from .models import Place, PlaceImage
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+
+from .models import Place, PlaceImage
 
 
 def index(request):
