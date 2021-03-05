@@ -18,7 +18,7 @@ def index(request):
                 "coordinates": [place.coordinates_lng, place.coordinates_lat]
             },
             "properties": {
-                "title": place.description_short,
+                "title": place.short_description,
                 "placeId": place.id,
                 "detailsUrl": reverse(json_place, kwargs={'id': place.id})
             }
@@ -26,27 +26,24 @@ def index(request):
         features.append(feature)
     context = {"features": json.dumps(features, ensure_ascii=False)}
 
-    print(context)
     return render(request, 'index.html', context)
 
 
 def json_place(request, id):
     place = get_object_or_404(Place, id=id)
-    images = PlaceImage.objects.all().filter(place=place.id)
-    imgs = []
-    for i in images:
-        imgs.append(i.image.url)
+    images = place.images.all()
+    imgs = [i.image.url for i in images]
 
-    responce = {
+    response = {
         "title": place.title,
         "imgs": imgs,
-        "description_short": place.description_short,
-        "description_long": place.description_long,
+        "description_short": place.short_description,
+        "description_long": place.long_description,
         "coordinates": {
             "lat": place.coordinates_lat,
             "lng": place.coordinates_lng
         }
     }
 
-    return JsonResponse(responce, safe=False,
+    return JsonResponse(response, safe=False,
                         json_dumps_params={'ensure_ascii': False})

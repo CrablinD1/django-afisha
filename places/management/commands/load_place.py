@@ -18,10 +18,11 @@ class Command(BaseCommand):
 
         place, created = Place.objects.get_or_create(
             title=place_info["title"],
-            description_short=place_info["description_short"],
-            description_long=place_info["description_long"],
-            coordinates_lng=place_info["coordinates"]["lng"],
-            coordinates_lat=place_info["coordinates"]["lat"],
+            defaults={
+                "short_description": place_info["description_short"],
+                "long_description": place_info["description_long"],
+                "coordinates_lng": place_info["coordinates"]["lng"],
+                "coordinates_lat": place_info["coordinates"]["lat"]}
         )
 
         for index, img in enumerate(place_info['imgs'], start=1):
