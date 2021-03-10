@@ -14,24 +14,27 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         response = requests.get(*options["url"])
         response.raise_for_status()
-        place_info = response.json()
+        raw_place = response.json()
 
         place, created = Place.objects.get_or_create(
-            title=place_info["title"],
+            title=raw_place["title"],
             defaults={
-                "short_description": place_info["description_short"],
-                "long_description": place_info["description_long"],
-                "coordinates_lng": place_info["coordinates"]["lng"],
-                "coordinates_lat": place_info["coordinates"]["lat"]}
+                "short_description": raw_place["description_short"],
+                "long_description": raw_place["description_long"],
+                "coordinates_lng": raw_place["coordinates"]["lng"],
+                "coordinates_lat": raw_place["coordinates"]["lat"]}
         )
 
-        for index, img in enumerate(place_info['imgs'], start=1):
-            response = requests.get(img)
-            image_content = ContentFile(response.content)
-            place_image_obj = PlaceImage.objects.create(
-                place=place,
-                position=index
-            )
-            place_image_obj.image.save(f'{place.pk}-{index}.jpg',
-                                       image_content, save=True)
-            self.stdout.write(f'Created object: {place_info["title"]}')
+        for index, img in enumerate(raw_place['imgs'], start=1):
+            response_img = requests.get(img)
+            if response_img.status_code == 200:
+                image_content = ContentFile(response_img.content)
+                place_image_obj = PlaceImage.objects.create(
+                    place=place,
+                    position=index
+                )
+                place_image_obj.image.save(f'{place.pk}-{index}.jpg',
+                                           image_content, save=True)
+                self.stdout.write(f'Created object: {raw_place["title"]}')
+            else:
+                self.stdout.write('Image not available')

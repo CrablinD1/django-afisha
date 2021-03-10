@@ -11,14 +11,12 @@ class ImageAdmin(SortableInlineAdminMixin, admin.TabularInline):
     readonly_fields = ["image_preview"]
 
     def image_preview(self, obj):
-        try:
+        if obj:
             return format_html(
                 '<img src="{}" width={}/>',
                 obj.image.url,
                 200,
             )
-        except Exception as err:
-            print(err)
 
 
 @admin.register(Place)
