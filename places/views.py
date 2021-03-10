@@ -1,5 +1,3 @@
-import json
-
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -24,7 +22,7 @@ def index(request):
             }
         }
         features.append(feature)
-    context = {"features": json.dumps(features, ensure_ascii=False)}
+    context = {"features": features}
 
     return render(request, 'index.html', context)
 
