@@ -27,14 +27,12 @@ class Command(BaseCommand):
 
         for index, img in enumerate(raw_place['imgs'], start=1):
             response_img = requests.get(img)
-            if response_img.status_code == 200:
-                image_content = ContentFile(response_img.content)
-                place_image_obj = PlaceImage.objects.create(
-                    place=place,
-                    position=index
-                )
-                place_image_obj.image.save(f'{place.pk}-{index}.jpg',
-                                           image_content, save=True)
-                self.stdout.write(f'Created object: {raw_place["title"]}')
-            else:
-                self.stdout.write('Image not available')
+            response.raise_for_status()
+            image_content = ContentFile(response_img.content)
+            place_image_obj = PlaceImage.objects.create(
+                place=place,
+                position=index
+            )
+            place_image_obj.image.save(f'{place.pk}-{index}.jpg',
+                                       image_content, save=True)
+            self.stdout.write(f'Created object: {raw_place["title"]}')

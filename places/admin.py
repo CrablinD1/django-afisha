@@ -12,14 +12,11 @@ class ImageAdmin(SortableInlineAdminMixin, admin.TabularInline):
 
     def image_preview(self, obj):
         if obj:
-            return format_html(
-                '<img src="{}" width={}/>',
-                obj.image.url,
-                200,
-            )
+            return format_html('<img src="{}" style="max-height:200px;'
+                               'max-width:200px;"/>',
+                               obj.image.url)
 
 
-@admin.register(Place)
 class PlaceAdmin(admin.ModelAdmin):
     inlines = [
         ImageAdmin,

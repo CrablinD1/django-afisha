@@ -19,8 +19,8 @@
    ```
 3. Создайте файл переменных .env для settings.py в каталоге where_to_go:
    ```
-   SECRET_KEY="your_key"
-   DEBUG= True
+   SECRET_KEY = "your_key"
+   DEBUG = True
    ```
 4. Создать и активировать виртуальное окружение удобным для вас способом:
    ```
